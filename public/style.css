@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.maindiv {
+  display: flex;
+  justify-content: center;
+}
+.btn1 {
+  background-color: aquamarine;
+  color: black;
+  width: 10vw;
+  height: 10vh;
+  margin-right: 50px;
+  font-size: 20px;
+  font-weight: bolder;
+}
+.btn2 {
+  width: 10vw;
+  height: 10vh;
+  background-color: aquamarine;
+  color: black;
+  font-size: 20px;
+  font-weight: bolder;
+}
+.what {
+  display: flex;
+  justify-content: center;
+  margin-top: 15%;
+  padding: 20px;
+}
+.a1,
+.a2 {
+  text-decoration: none;
+  color: black;
+}
+.login_div,
+.signup_div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15%;
+}
+.form {
+  border-radius: 5px;
+  background-color: lightgray;
+  padding: 50px;
+  display: flex;
+  width: 20vw;
+  gap: 20px;
+  flex-direction: column;
+  box-shadow: 0px 0px 5px 5px black;
+}
+.a_login,
+.a_signup {
+  margin-top: 10px;
+}
+.login_btn,
+.signup_btn {
+  background-color: rgb(75, 143, 8);
+  color: black;
+  font-size: larger;
+  font-weight: bolder;
+  width: 10vw;
+  height: 5vh;
+  align-self: center;
+}
+.Username {
+  width: 20vw;
+  height: 5vh;
+}
+.password {
+  width: 20vw;
+  height: 5vh;
+}
