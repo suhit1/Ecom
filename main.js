@@ -3,8 +3,7 @@ const app = express();
 const session = require("express-session");
 const multer = require("multer");
 const fs = require("fs");
-const req = require("express/lib/request");
-// const { json } = require("express/lib/response");
+const checkAuth = require("./public/middlewares/CheckAuth.js"); //importing module
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -19,6 +18,8 @@ const upload = multer({ storage: storage });
 
 app.use(express.static("public")); // using express static for routing
 
+app.use(express.static("public/profile_pics"));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //for parsing the form data
 
@@ -32,20 +33,21 @@ app.use(
 
 app.set("view engine", "ejs"); // setting an engine for using ejs which i in view folder
 
-app.get("/", (req, res) => {
-  res.render("main.ejs");
+app.get("/", checkAuth, (req, res) => {
+  res.redirect("/user");
 });
 
 // route chaining
 app
   .route("/login")
   .get((req, res) => {
-    if (req.session.isloggedin !== true) {
-      res.render("login", { error: "" });
+    if (req.session.isloggedin === true) {
+      console.log(req.session);
+      res.redirect("/user");
       return;
     }
     //else
-    res.redirect("/");
+    res.render("login", { error: "" });
   })
   .post((req, res) => {
     //reading file
@@ -65,13 +67,16 @@ app
       if (data.length > 0) filedata = JSON.parse(data);
 
       let found = false;
+      let img_name = "";
 
       filedata.forEach((element) => {
         if (
           element.username === req.body.Username &&
           element.password === req.body.password
-        )
+        ) {
           found = true;
+          img_name = element.profile_pic;
+        }
       });
 
       if (found === true) {
@@ -79,11 +84,14 @@ app
         req.session.username = req.body.Username;
         console.log(req.session);
         // res.render("login", { error: "Successfully Loged In" }); we cant send this beacuse if we will send this then we cant redirect using sedn because res can be used only once
+        // res.render("user", { username: req.session.username });
         res.redirect("/user");
         return;
       }
 
-      res.render("login", { error: "Username Or Password is Incorrect" });
+      res.render("login", {
+        error: "Username Or Password is Incorrect",
+      });
 
       return;
     });
@@ -94,12 +102,11 @@ app
 app
   .route("/signup")
   .get((req, res) => {
-    if (req.session.isloggedin !== true) {
-      res.render("signup", { error: "" });
+    if (req.session.isloggedin === true) {
+      res.redirect("/user");
       return;
     }
-    //else
-    res.redirect("/");
+    res.render("signup", { error: "" });
   })
   .post(upload.single("profile_pic"), (req, res) => {
     //reading file
@@ -129,6 +136,8 @@ app
         return;
       }
 
+      console.log(req.file);
+
       file_data.push({
         username: req.body.Username,
         password: req.body.password,
@@ -137,6 +146,7 @@ app
 
       //writing file
       fs.writeFile("./data.txt", JSON.stringify(file_data), (err) => {
+        req.session.filename = req.file.filename;
         res.render("signup", {
           error: "Successfully SignUp Plz Go To Login Page For Sign In!!",
         });
@@ -145,9 +155,23 @@ app
   });
 
 app.get("/user", (req, res) => {
-  res.render("user");
+  if (!req.session.isloggedin) {
+    res.redirect("/");
+    return;
+  }
+  console.log(req.session);
+  res.render("user", {
+    username: req.session.username,
+    img_src: req.session.filename,
+  });
 });
 
-app.listen(9000, (err) => {
-  console.log(`Port is Listening at http://localhost:9000`);
+app.get("/logout", (req, res) => {
+  console.log(req.session);
+  req.session.destroy();
+  res.redirect("/");
+});
+
+app.listen(8000, (err) => {
+  console.log(`Port is Listening at 8000`);
 });

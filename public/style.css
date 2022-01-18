@@ -1,7 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-}
 .maindiv {
   display: flex;
   justify-content: center;
@@ -73,4 +69,16 @@
 .password {
   width: 20vw;
   height: 5vh;
+}
+.logout_btn {
+  float: right;
+  position: relative;
+  top: -50px;
+}
+.header {
+  border-bottom-style: groove;
+}
+.user_img {
+  width: 20px;
+  height: 20px;
 }
