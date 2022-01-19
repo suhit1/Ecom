@@ -36,10 +36,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 15%;
+  margin-top: 10%;
 }
 .signup_div {
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .form {
   border-radius: 5px;
@@ -90,4 +90,10 @@
 .user_info {
   display: flex;
   justify-content: space-between;
+}
+.forgotpassword {
+  margin: 5px;
+}
+.heading {
+  text-align: center;
 }

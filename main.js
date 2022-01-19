@@ -6,6 +6,7 @@ const fs = require("fs");
 const checkAuth = require("./public/middlewares/CheckAuth.js"); //importing module to ceck whether loged in or not!
 const sendEmail = require("./method/sendEmail"); //importing module to send email
 const { json } = require("express/lib/response");
+const e = require("express");
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -177,15 +178,21 @@ app
         let link = `http://localhost:8000/verify/${mail_token}`;
 
         // sending email
-        sendEmail(req.body.email_id, req.body.Username, link, (err) => {
-          if (err) {
-            res.render("signup", { error: "Something Went Wrong" });
+        sendEmail(
+          req.body.email_id,
+          req.body.Username,
+          link,
+          "verification",
+          (err) => {
+            if (err) {
+              res.render("signup", { error: "Something Went Wrong" });
+            }
+            res.render("signup", {
+              error:
+                "A Mail Has Been Sent on your email address please Verify your account",
+            });
           }
-          res.render("signup", {
-            error:
-              "A Mail Has Been Sent on your email address please Verify your account",
-          });
-        });
+        );
       });
     });
   });
@@ -249,6 +256,63 @@ app.get("/verify/:token", (req, res) => {
       return;
     }
     res.render("invalidToken");
+  });
+});
+
+app.get("/forgotpassword", (req, res) => {
+  res.render("forgot", { error: "" });
+});
+
+app.post("/reset", (req, res) => {
+  let link = `http://localhost:8000/reset/${Date.now()}`;
+  fs.readFile("data.txt", "utf-8", (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    if (data.length == 0) {
+      res.render("forgot", { error: "PLz Create An Account First!!" });
+      return;
+    }
+
+    data = JSON.parse(data);
+
+    data.forEach((el) => {
+      if (el.email_id === req.body.email_id) req.session.username = el.username;
+    });
+  });
+  sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
+    if (err) {
+      res.render("forgot", { error: "Something Went Wrong" });
+    }
+    res.render("forgot", {
+      error: "A Mail Has Been Sent on your email address",
+    });
+  });
+});
+
+app.get("/reset/:token", (req, res) => {
+  res.render("resetPassword", { error: "" });
+});
+
+app.post("/updatepassword", (req, res) => {
+  console.log(req.session);
+  fs.readFile("data.txt", "utf-8", (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    data = JSON.parse(data);
+
+    data.forEach((el) => {
+      if (el.username === req.session.username) el.password = req.body.password;
+    });
+
+    fs.writeFile("data.txt", JSON.stringify(data), (err) => {
+      res.send("Password Updated You Can Now Login");
+    });
   });
 });
 
