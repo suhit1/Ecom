@@ -38,6 +38,9 @@
   align-items: center;
   margin-top: 15%;
 }
+.signup_div {
+  margin-top: 10%;
+}
 .form {
   border-radius: 5px;
   background-color: lightgray;
@@ -62,10 +65,8 @@
   height: 5vh;
   align-self: center;
 }
-.Username {
-  width: 20vw;
-  height: 5vh;
-}
+.Username,
+.email_id,
 .password {
   width: 20vw;
   height: 5vh;
@@ -73,12 +74,20 @@
 .logout_btn {
   float: right;
   position: relative;
-  top: -50px;
+  top: -30px;
+  background-color: aquamarine;
+  color: black;
+  margin: 5px;
 }
 .header {
   border-bottom-style: groove;
 }
 .user_img {
-  width: 20px;
-  height: 20px;
+  width: 60px;
+  height: 50px;
+  border-radius: 5px;
+}
+.user_info {
+  display: flex;
+  justify-content: space-between;
 }

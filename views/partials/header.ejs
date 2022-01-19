@@ -1,6 +1,8 @@
 <div class="header">
-  <h1>Welcome <%=username%></h1>
-  <!-- <img class="user_img" src=<% "img_src" %> /> -->
+  <div class="user_info">
+    <h1>Welcome <%=username%></h1>
+    <img class="user_img" src="<%= img_src %>" />
+  </div>
   <button class="logout_btn">
     <a style="text-decoration: none; color: black" href="/logout">logout</a>
   </button>

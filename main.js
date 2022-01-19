@@ -3,7 +3,9 @@ const app = express();
 const session = require("express-session");
 const multer = require("multer");
 const fs = require("fs");
-const checkAuth = require("./public/middlewares/CheckAuth.js"); //importing module
+const checkAuth = require("./public/middlewares/CheckAuth.js"); //importing module to ceck whether loged in or not!
+const sendEmail = require("./method/sendEmail"); //importing module to send email
+const { json } = require("express/lib/response");
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -41,8 +43,8 @@ app.get("/", checkAuth, (req, res) => {
 app
   .route("/login")
   .get((req, res) => {
+    console.log(req.session);
     if (req.session.isloggedin === true) {
-      console.log(req.session);
       res.redirect("/user");
       return;
     }
@@ -68,6 +70,7 @@ app
 
       let found = false;
       let img_name = "";
+      let verified = false;
 
       filedata.forEach((element) => {
         if (
@@ -77,23 +80,40 @@ app
           found = true;
           img_name = element.profile_pic;
         }
+        if (
+          element.username === req.body.Username &&
+          element.isVerified === true
+        )
+          verified = true;
       });
 
-      if (found === true) {
+      console.log("Found=" + found);
+      console.log("verified=" + verified);
+
+      if (found === true && verified === true) {
         req.session.isloggedin = true;
         req.session.username = req.body.Username;
+        req.session.filename = img_name;
         console.log(req.session);
         // res.render("login", { error: "Successfully Loged In" }); we cant send this beacuse if we will send this then we cant redirect using sedn because res can be used only once
         // res.render("user", { username: req.session.username });
         res.redirect("/user");
         return;
       }
+      if (!found) {
+        res.render("login", {
+          error: "Username Or Password is Incorrect",
+        });
+        return;
+      }
 
-      res.render("login", {
-        error: "Username Or Password is Incorrect",
-      });
-
-      return;
+      if (!verified) {
+        req.session.username = req.body.Username;
+        res.render("login", {
+          error: "Your Account is not verified",
+        });
+        return;
+      }
     });
   });
 
@@ -136,30 +156,46 @@ app
         return;
       }
 
-      console.log(req.file);
-
+      // console.log(req.file);
+      const mail_token = Date.now();
       file_data.push({
         username: req.body.Username,
         password: req.body.password,
         profile_pic: req.file.filename,
+        email_id: req.body.email_id,
+        isVerified: false,
+        mail_token,
       });
 
       //writing file
       fs.writeFile("./data.txt", JSON.stringify(file_data), (err) => {
         req.session.filename = req.file.filename;
-        res.render("signup", {
-          error: "Successfully SignUp Plz Go To Login Page For Sign In!!",
+        req.session.username = req.body.Username;
+
+        console.log(req.session);
+
+        let link = `http://localhost:8000/verify/${mail_token}`;
+
+        // sending email
+        sendEmail(req.body.email_id, req.body.Username, link, (err) => {
+          if (err) {
+            res.render("signup", { error: "Something Went Wrong" });
+          }
+          res.render("signup", {
+            error:
+              "A Mail Has Been Sent on your email address please Verify your account",
+          });
         });
       });
     });
   });
 
 app.get("/user", (req, res) => {
+  console.log(req.session);
   if (!req.session.isloggedin) {
     res.redirect("/");
     return;
   }
-  console.log(req.session);
   res.render("user", {
     username: req.session.username,
     img_src: req.session.filename,
@@ -170,6 +206,50 @@ app.get("/logout", (req, res) => {
   console.log(req.session);
   req.session.destroy();
   res.redirect("/");
+});
+
+//for Verification of account
+app.get("/verify/:token", (req, res) => {
+  console.log(req.session);
+  const { token } = req.params; // this toekn will be in string format
+
+  //readiing file to get mail_token
+  fs.readFile("data.txt", "utf-8", (err, data) => {
+    data = JSON.parse(data);
+    let mail_token;
+    data.forEach((el) => {
+      if (el.username === req.session.username) {
+        mail_token = el.mail_token;
+      }
+    });
+    console.log("token=" + parseInt(token));
+    console.log("mail_token=" + mail_token);
+    if (parseInt(token) === mail_token) {
+      fs.readFile("data.txt", "utf-8", (err, data) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        data = JSON.parse(data);
+
+        data.forEach((element) => {
+          if (element.username === req.session.username)
+            element.isVerified = true;
+        });
+
+        fs.writeFile("data.txt", JSON.stringify(data), (err) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          res.send("Account Verified Go Back To Home Page and Login!!!");
+        });
+      });
+      return;
+    }
+    res.render("invalidToken");
+  });
 });
 
 app.listen(8000, (err) => {
