@@ -1,0 +1,18 @@
+<div class="row outside_div">
+  <% products_data.forEach((product)=>{ %>
+  <div class="product_box col-sm-4">
+    <div class="inside_div">
+      <img class="product_image" src="<%= product.image %>" alt="Image" />
+      <h3 class="product_name"><%= product.name %></h3>
+      <h3 class="product_price">Rs. <%= product.Price %></h3>
+      <button class="btn-lg btn-primary">Add To Cart</button>
+      <button class="btn-lg btn-warning">View Disc...</button>
+    </div>
+  </div>
+  <% }) %>
+</div>
+<button class="btn-lg btn-primary">
+  <a style="text-decoration: none" class="text-white" href="/loadmore"
+    >Load More</a
+  >
+</button>

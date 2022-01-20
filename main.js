@@ -4,9 +4,11 @@ const session = require("express-session");
 const multer = require("multer");
 const fs = require("fs");
 const checkAuth = require("./public/middlewares/CheckAuth.js"); //importing module to ceck whether loged in or not!
+const getprouductdata = require("./method/getproductdata"); // to get product data
 const sendEmail = require("./method/sendEmail"); //importing module to send email
 const { json } = require("express/lib/response");
 const e = require("express");
+const { clearLine } = require("readline");
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -22,6 +24,8 @@ const upload = multer({ storage: storage });
 app.use(express.static("public")); // using express static for routing
 
 app.use(express.static("public/profile_pics"));
+
+app.use(express.static("product_images"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //for parsing the form data
@@ -95,6 +99,7 @@ app
         req.session.isloggedin = true;
         req.session.username = req.body.Username;
         req.session.filename = img_name;
+        req.session.index = 0;
         console.log(req.session);
         // res.render("login", { error: "Successfully Loged In" }); we cant send this beacuse if we will send this then we cant redirect using sedn because res can be used only once
         // res.render("user", { username: req.session.username });
@@ -203,10 +208,12 @@ app.get("/user", (req, res) => {
     res.redirect("/");
     return;
   }
-  res.render("user", {
-    username: req.session.username,
-    img_src: req.session.filename,
-  });
+  getprouductdata(req, res);
+});
+
+app.get("/loadmore", (req, res) => {
+  req.session.index = req.session.index + 5;
+  res.redirect("/user");
 });
 
 app.get("/logout", (req, res) => {
@@ -314,6 +321,11 @@ app.post("/updatepassword", (req, res) => {
       res.send("Password Updated You Can Now Login");
     });
   });
+});
+
+app.get("/product", (req, res) => {
+  req.session.index = 14;
+  getprouductdata(req, res);
 });
 
 app.listen(8000, (err) => {
