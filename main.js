@@ -100,6 +100,7 @@ app
         req.session.username = req.body.Username;
         req.session.filename = img_name;
         req.session.index = 0;
+        req.session.isVerified = true;
         console.log(req.session);
         // res.render("login", { error: "Successfully Loged In" }); we cant send this beacuse if we will send this then we cant redirect using sedn because res can be used only once
         // res.render("user", { username: req.session.username });
@@ -146,7 +147,7 @@ app
 
       if (data.length > 0) file_data = JSON.parse(data);
 
-      if (!req.body.Username || !req.body.password || !req.file.filename) {
+      if (!req.body.Username || !req.body.password) {
         res.render("signup", { error: "Please Fill All Fields" });
         return;
       }
@@ -167,7 +168,6 @@ app
       file_data.push({
         username: req.body.Username,
         password: req.body.password,
-        profile_pic: req.file.filename,
         email_id: req.body.email_id,
         isVerified: false,
         mail_token,
@@ -175,7 +175,6 @@ app
 
       //writing file
       fs.writeFile("./data.txt", JSON.stringify(file_data), (err) => {
-        req.session.filename = req.file.filename;
         req.session.username = req.body.Username;
 
         console.log(req.session);
@@ -225,7 +224,8 @@ app.get("/logout", (req, res) => {
 //for Verification of account
 app.get("/verify/:token", (req, res) => {
   console.log(req.session);
-  const { token } = req.params; // this toekn will be in string format
+  const { token } = req.params; // in param data gets store after slash i.e / as in this case verify/ after this slas whatever will be there will get store in token variable
+  // this toekn will be in string format
 
   //readiing file to get mail_token
   fs.readFile("data.txt", "utf-8", (err, data) => {
@@ -272,6 +272,7 @@ app.get("/forgotpassword", (req, res) => {
 
 app.post("/reset", (req, res) => {
   let link = `http://localhost:8000/reset/${Date.now()}`;
+  let email_found;
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) {
       console.log(err);
@@ -285,18 +286,29 @@ app.post("/reset", (req, res) => {
 
     data = JSON.parse(data);
 
+    email_found = false;
+
     data.forEach((el) => {
-      if (el.email_id === req.body.email_id) req.session.username = el.username;
+      if (el.email_id === req.body.email_id) {
+        req.session.username = el.username;
+        email_found = true;
+      }
     });
   });
-  sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
-    if (err) {
-      res.render("forgot", { error: "Something Went Wrong" });
-    }
+  if (email_found) {
+    sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
+      if (err) {
+        res.render("forgot", { error: "Something Went Wrong" });
+      }
+      res.render("forgot", {
+        error: "A Mail Has Been Sent on your email address",
+      });
+    });
+  } else {
     res.render("forgot", {
-      error: "A Mail Has Been Sent on your email address",
+      error: "Email Id Not Found!! Plz Sign Up First",
     });
-  });
+  }
 });
 
 app.get("/reset/:token", (req, res) => {
@@ -323,9 +335,237 @@ app.post("/updatepassword", (req, res) => {
   });
 });
 
+app.get("/gotocart", (req, res) => {
+  if (!req.session.username) {
+    res.redirect("/login");
+    return;
+  }
+
+  // reading cart file to get informaton regardin if user has add to cart or not
+  fs.readFile("cart.txt", "utf-8", (err, data) => {
+    if (err) {
+      console.log(`err`);
+      return;
+    }
+
+    if (data.length === 0) {
+      res.render("cart", {
+        username: req.session.username,
+        isloggedin: true,
+        error: "Cart Is Empty!!!",
+        quantity: "",
+      });
+      return;
+    }
+
+    data = JSON.parse(data);
+
+    if (!data[req.session.username]) {
+      res.render("cart", {
+        username: req.session.username,
+        isloggedin: true,
+        error: "Cart Is Empty!!!",
+        quantity: "",
+      });
+      return;
+    }
+
+    res.render("cart", {
+      username: req.session.username,
+      isloggedin: true,
+      cart_data: data[req.session.username],
+      error: "",
+      quantity: "",
+    });
+  });
+});
+
 app.get("/product", (req, res) => {
   req.session.index = 14;
   getprouductdata(req, res);
+});
+
+app.get("/add_to_cart", (req, res) => {
+  console.log(req.session);
+  if (!req.session.isloggedin) {
+    res.redirect("/login");
+    return;
+  }
+
+  const { product_id } = req.query;
+
+  //reading file to add the product inside cart file from product.txt file
+  fs.readFile("products.txt", (err, data) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    let cart_data = {};
+
+    data = JSON.parse(data);
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].id === parseInt(product_id)) {
+        cart_data.id = data[i].id;
+        cart_data.image = data[i].image;
+        cart_data.name = data[i].name;
+        cart_data.cart_quantity = 1;
+        cart_data.product_quantity = data[i].quantity;
+        cart_data.price = data[i].Price;
+        break;
+      }
+    }
+    console.log(`cartdata`);
+    console.log(cart_data);
+    //reading cart file
+
+    fs.readFile("cart.txt", (err, data) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      let cart = {};
+
+      if (data.length > 0) {
+        cart = JSON.parse(data);
+      }
+
+      if (!cart[req.session.username]) cart[req.session.username] = [];
+
+      cart[req.session.username].push(cart_data);
+
+      fs.writeFile("cart.txt", JSON.stringify(cart), (err) => {
+        res.redirect("/user");
+      });
+    });
+  });
+});
+
+app.get("/remove_product_id", (req, res) => {
+  const { product_id } = req.query; // this product_id will be in string format
+
+  // reading cart file to delete data fro it
+
+  fs.readFile("cart.txt", (err, data) => {
+    if (err) {
+      console.log(`err`);
+      return;
+    }
+
+    data = JSON.parse(data);
+
+    console.log(data[req.session.username]);
+
+    data[req.session.username] = data[req.session.username].filter((el) => {
+      if (parseInt(product_id) !== el.id) return true;
+    });
+
+    console.log(data);
+
+    if (data[req.session.username].length === 0)
+      delete data[req.session.username]; // to delete the username from cart as now cart is empty
+
+    // updating the cart file
+    fs.writeFile("cart.txt", JSON.stringify(data), (err) => {
+      // checking if data exist or not
+      if (!data[req.session.username]) {
+        console.log(`Inside`);
+        res.render("cart", {
+          username: req.session.username,
+          isloggedin: true,
+          error: "Your cart Is empty",
+          quantity: "",
+        });
+        return;
+      }
+      res.render("cart", {
+        username: req.session.username,
+        isloggedin: true,
+        cart_data: data[req.session.username],
+        error: "",
+        quantity: "",
+      });
+    });
+  });
+});
+
+app.get("/plus_quantity", (req, res) => {
+  const { product_id } = req.query;
+
+  console.log(product_id);
+
+  // reading file to update data
+  fs.readFile("cart.txt", (err, data) => {
+    data = JSON.parse(data);
+
+    data[req.session.username].forEach((el) => {
+      if (el.id === parseInt(product_id)) {
+        if (el.cart_quantity + 1 <= el.product_quantity) {
+          el.cart_quantity++;
+        } else {
+          res.render("cart", {
+            username: req.session.username,
+            isloggedin: true,
+            cart_data: data[req.session.username],
+            error: "",
+            quantity: "Only This Much Stock We Have",
+          });
+          return;
+        }
+      }
+    });
+
+    // console.log(data);
+
+    //writing file
+    fs.writeFile("cart.txt", JSON.stringify(data), (err) => {
+      res.render("cart", {
+        username: req.session.username,
+        isloggedin: true,
+        cart_data: data[req.session.username],
+        error: "",
+        quantity: "",
+      });
+    });
+  });
+});
+
+app.get("/minus_quanity", (req, res) => {
+  const { product_id } = req.query;
+
+  // reading file to edit
+  fs.readFile("cart.txt", (err, data) => {
+    data = JSON.parse(data);
+
+    data[req.session.username].forEach((el) => {
+      if (el.id === parseInt(product_id)) {
+        if (el.cart_quantity - 1 <= 0) {
+          res.render("cart", {
+            username: req.session.username,
+            isloggedin: true,
+            cart_data: data[req.session.username],
+            error: "",
+            quantity: "At Least One Quantity Must Be Selecetd",
+          });
+        } else {
+          el.cart_quantity--;
+        }
+      }
+    });
+
+    //updting file
+    fs.writeFile("cart.txt", JSON.stringify(data), (err) => {
+      res.render("cart", {
+        username: req.session.username,
+        isloggedin: true,
+        cart_data: data[req.session.username],
+        error: "",
+        quantity: "",
+      });
+    });
+  });
 });
 
 app.listen(8000, (err) => {

@@ -1,6 +1,9 @@
 * {
   padding: 5px;
 }
+body {
+  background-image: linear-gradient(to right, #4ca1af, #c4e0e5);
+}
 .maindiv {
   display: flex;
   justify-content: center;
@@ -32,6 +35,7 @@
 .a2 {
   text-decoration: none;
   color: black;
+  font-size: 1.5vw;
 }
 .login_div,
 .signup_div {
@@ -53,6 +57,11 @@
   gap: 20px;
   flex-direction: column;
   box-shadow: 0px 0px 5px 5px black;
+  background-image: linear-gradient(
+    to right,
+    rgb(199, 228, 211),
+    rgb(243, 191, 191)
+  );
 }
 .a_login,
 .a_signup {
@@ -62,7 +71,7 @@
 .signup_btn {
   background-color: rgb(75, 143, 8);
   color: black;
-  font-size: larger;
+  font-size: 1.5vw;
   font-weight: bolder;
   width: 10vw;
   height: 5vh;
@@ -75,16 +84,14 @@
   height: 5vh;
 }
 .logout_btn {
-  float: right;
-  position: relative;
-  top: -30px;
+  width: 7vw;
   background-color: aquamarine;
-  color: black;
-  margin: 5px;
 }
 .header {
   border-bottom-style: groove;
   margin-bottom: 50px;
+  border-color: black;
+  padding-bottom: 60px;
 }
 .user_img {
   width: 60px;
@@ -124,4 +131,70 @@
   background-color: white;
   border: 2px dotted black;
   border-radius: 10px;
+}
+.backtomain {
+  width: 150px;
+  height: 50px;
+  font-size: 15px;
+  float: right;
+  color: white;
+  background-color: cornflowerblue;
+  position: relative;
+  top: -60px;
+}
+.gotocart {
+  position: relative;
+  top: -30px;
+  width: 10vw;
+  float: right;
+  background-color: cadetblue;
+}
+.a_gotocart,
+.a_add_toCart {
+  text-decoration: none;
+  color: white;
+  font-size: 1vw;
+}
+.a_gotocart:hover,
+.a_add_toCart:hover {
+  text-decoration: none;
+  color: white;
+}
+.a_home {
+  font-size: 1vw;
+  text-decoration: none;
+  color: white;
+  position: relative;
+}
+.a_home:hover {
+  text-decoration: none;
+  color: white;
+}
+.add_toCart_button {
+  background-color: chocolate;
+  width: 8vw;
+  font-size: 1vw;
+}
+.home_btn {
+  width: 7vw;
+}
+.btn_div {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  top: -20px;
+}
+.a_remove_Cart {
+  color: white;
+  text-decoration: none;
+  font-size: 1vw;
+}
+.a_remove_Cart:hover {
+  color: white;
+  text-decoration: none;
+}
+.checkou_btnt {
+  float: right;
 }

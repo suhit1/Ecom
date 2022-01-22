@@ -20,7 +20,14 @@
     />
   </head>
   <body>
-    <%- include("partials/header",{username,img_src}) %> <%-
-    include("partials/products",{products_data}) %>
+    <%- include("partials/header",{username,isloggedin}) %> 
+
+    <button class="btn-lg gotocart">
+      <a class="a_gotocart" href="/gotocart">Go to Cart</a>
+    </button>
+  </div>
+    <div style="margin-top: 100px;">
+    <%- include("partials/products",{products_data}) %>
+  </div>
   </body>
 </html>

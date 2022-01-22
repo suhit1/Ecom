@@ -28,7 +28,7 @@ module.exports = (email_id, name, link, whattodo, callback) => {
           TextPart: "Greetings from Suhit!",
           HTMLPart: `Hi <b>${name}</b> Hope you are doing Well!
                       <br/>
-                   click <a href=${link}>here</a>  to Verify your account
+                   click <a href="${link}">here</a>  to Verify your account
                    <br/>
                    If this link does not open copy this link and paste it in the browser
                    `,
@@ -37,10 +37,10 @@ module.exports = (email_id, name, link, whattodo, callback) => {
     });
     request
       .then((result) => {
-        callback();
+        callback(null, result.body);
       })
       .catch((err) => {
-        callback(err);
+        callback(err, null);
       });
   } else if (whattodo === "forgotpassword") {
     const request = mailjet.post("send", { version: "v3.1" }).request({

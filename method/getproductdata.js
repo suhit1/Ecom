@@ -5,9 +5,9 @@ module.exports = (req, res) => {
     data = JSON.parse(data);
     let arr = [];
 
-    console.log(data);
+    // console.log(data);
 
-    if (req.session.index < data.length) {
+    if (req.session.index < data.length - 1) {
       for (let i = 0; i < req.session.index + 5; i++) {
         if (data.length > i) {
           arr.push(data[i]);
@@ -16,19 +16,19 @@ module.exports = (req, res) => {
         break;
       }
 
-      console.log(arr);
+      // console.log(arr);
 
       res.render("user", {
         username: req.session.username,
-        img_src: req.session.filename,
         products_data: arr,
+        isloggedin: true,
       });
       return;
     }
     res.render("user", {
       username: req.session.username,
-      img_src: req.session.filename,
       products_data: data,
+      isloggedin: false,
     });
   });
 };

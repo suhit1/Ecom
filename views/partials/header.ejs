@@ -1,9 +1,28 @@
 <div class="header">
   <div class="user_info">
-    <h1>Welcome <%=username%></h1>
-    <img class="user_img" src="<%= img_src %>" />
+    <h1 style="margin-top: 30px">Welcome <%=username%></h1>
+    <% if(isloggedin===true) { %>
+    <img class="user_img" src="User.jpg" />
+    <% } %>
   </div>
-  <button class="btn btn-success logout_btn">
-    <a style="text-decoration: none; color: black" href="/logout">logout</a>
+  <% if(isloggedin===true) { %>
+  <div class="btn_div">
+    <button class="btn btn-success logout_btn">
+      <a
+        style="font-size: 1vw; text-decoration: none; color: white"
+        href="/logout"
+        >logout</a
+      >
+    </button>
+    <button class="btn-lg btn-success home_btn">
+      <a class="a_home" href="/">Home</a>
+    </button>
+  </div>
+  <% } else { %>
+  <button class="backtomain">
+    <a style="color: white; text-decoration: none" href="/"
+      >Go Back To Home Page</a
+    >
   </button>
+  <% } %>
 </div>
