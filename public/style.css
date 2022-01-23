@@ -241,3 +241,8 @@ body {
   color: white;
   text-decoration: none;
 }
+.suhit {
+  text-align: right;
+  position: relative;
+  bottom: 0px;
+}
