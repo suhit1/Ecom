@@ -434,6 +434,20 @@ app.get("/add_to_cart", (req, res) => {
 
       if (!cart[req.session.username]) cart[req.session.username] = [];
 
+      // checking if product already exist in cart
+
+      let product_found_in_cart = false;
+
+      cart[req.session.username].forEach((el) => {
+        if (parseInt(product_id) === el.id) {
+          res.redirect("/user");
+          product_found_in_cart = true;
+          return;
+        }
+      });
+
+      if (product_found_in_cart) return;
+
       cart[req.session.username].push(cart_data);
 
       fs.writeFile("cart.txt", JSON.stringify(cart), (err) => {
@@ -568,6 +582,6 @@ app.get("/minus_quanity", (req, res) => {
   });
 });
 
-app.listen(8000, (err) => {
+app.listen(process.env.PORT || 8000, (err) => {
   console.log(`Port is Listening at 8000`);
 });
