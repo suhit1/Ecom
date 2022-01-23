@@ -60,7 +60,7 @@ module.exports = (email_id, name, link, whattodo, callback) => {
           TextPart: "Greetings from Suhit!",
           HTMLPart: `Welcome dear <b>${name}</b> Hope you are doing Well!
                       <br/>
-                   click <a href=${link}>here</a>  to reset Your Password
+                   Copy This link And paste it in your browser ${link} to reset Your Password
                    <br/>
                    If this link does not open copy this link and paste it in the browser
                    `,
