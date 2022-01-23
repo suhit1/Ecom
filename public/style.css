@@ -89,14 +89,22 @@ body {
 }
 .header {
   border-bottom-style: groove;
-  margin-bottom: 50px;
   border-color: black;
-  padding-bottom: 60px;
+  padding-bottom: 20px;
+  margin-bottom: 40px;
+}
+.header_data {
+  display: flex;
+  gap: 10px;
+  float: right;
+  flex-direction: row-reverse;
 }
 .user_img {
   width: 60px;
   height: 50px;
-  border-radius: 5px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 5px black;
+  cursor: pointer;
 }
 .user_info {
   display: flex;
@@ -133,21 +141,8 @@ body {
   border-radius: 10px;
 }
 .backtomain {
-  width: 150px;
-  height: 50px;
   font-size: 15px;
-  float: right;
-  color: white;
   background-color: cornflowerblue;
-  position: relative;
-  top: -60px;
-}
-.gotocart {
-  position: relative;
-  top: -30px;
-  width: 10vw;
-  float: right;
-  background-color: cadetblue;
 }
 .a_gotocart,
 .a_add_toCart {
@@ -160,13 +155,15 @@ body {
   text-decoration: none;
   color: white;
 }
-.a_home {
+.a_home,
+.a_logout {
   font-size: 1vw;
   text-decoration: none;
-  color: white;
-  position: relative;
+  color: black;
+  font-size: 30px;
 }
-.a_home:hover {
+.a_home:hover,
+.a_logout:hover {
   text-decoration: none;
   color: white;
 }
@@ -177,14 +174,6 @@ body {
 }
 .home_btn {
   width: 7vw;
-}
-.btn_div {
-  float: right;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  position: relative;
-  top: -20px;
 }
 .a_remove_Cart {
   color: white;
@@ -197,4 +186,58 @@ body {
 }
 .checkou_btnt {
   float: right;
+}
+.a-checkout {
+  text-decoration: none;
+  color: white;
+  font-size: 1vw;
+}
+.a-checkout:hover {
+  text-decoration: none;
+  color: white;
+  font-size: 1vw;
+}
+.checkout_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+/* .checkout_box {
+  background-image: linear-gradient(
+    to right,
+    rgb(199, 228, 211),
+    rgb(243, 191, 191)
+  );
+} */
+.inside_checkout {
+  padding: 40px;
+  text-align: center;
+  background-image: linear-gradient(
+    to right,
+    rgb(199, 228, 211),
+    rgb(243, 191, 191)
+  );
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 5px black;
+}
+.a_product_Page {
+  color: black;
+  text-decoration: underline;
+  font-size: 1.5vw;
+  font-weight: 900;
+  float: right;
+}
+.a_product_Page:hover {
+  color: white;
+}
+.notloogedin {
+  color: black;
+  text-decoration: none;
+  font-weight: bolder;
+  font-size: 30px;
+}
+.notloogedin:hover {
+  color: white;
+  text-decoration: none;
 }

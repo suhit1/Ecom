@@ -21,12 +21,11 @@
   </head>
   <body>
     <%- include('partials/header',{username,isloggedin}) %> <% if(error) { %>
+    <h1>Your Cart is Empty!!!</h1>
+    <% } else { %>
     <button class="btn-lg btn-warning checkou_btnt">
       <a class="a-checkout" href="/checkout">Checkout</a>
     </button>
-    <h1>Your Cart is Empty!!!</h1>
-    <% } else { %>
-
     <div id="grad1" class="row outside_div">
       <% cart_data.forEach((product)=>{ %>
       <div class="product_box col-sm-3">

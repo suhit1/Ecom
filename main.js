@@ -179,7 +179,7 @@ app
 
         console.log(req.session);
 
-        let link = `https://suhit-ecom.herokuapp.com/verify/${mail_token}`;
+        let link = `http://localhost:8000/verify/${mail_token}`;
 
         // sending email
         sendEmail(
@@ -272,7 +272,6 @@ app.get("/forgotpassword", (req, res) => {
 
 app.post("/reset", (req, res) => {
   let link = `http://localhost:8000/reset/${Date.now()}`;
-  let email_found;
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) {
       console.log(err);
@@ -285,8 +284,7 @@ app.post("/reset", (req, res) => {
     }
 
     data = JSON.parse(data);
-
-    email_found = false;
+    let email_found = false;
 
     data.forEach((el) => {
       if (el.email_id === req.body.email_id) {
@@ -294,21 +292,22 @@ app.post("/reset", (req, res) => {
         email_found = true;
       }
     });
-  });
-  if (email_found) {
-    sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
-      if (err) {
-        res.render("forgot", { error: "Something Went Wrong" });
-      }
-      res.render("forgot", {
-        error: "A Mail Has Been Sent on your email address",
+    if (email_found) {
+      sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
+        if (err) {
+          res.render("forgot", { error: "Something Went Wrong" });
+        }
+        res.render("forgot", {
+          error: `A Mail Has Been Sent on your email address
+                  Check You email and spam folder`,
+        });
       });
-    });
-  } else {
-    res.render("forgot", {
-      error: "Email Id Not Found!! Plz Sign Up First",
-    });
-  }
+    } else {
+      res.render("forgot", {
+        error: "Email Id Not Found!! Plz Sign Up First",
+      });
+    }
+  });
 });
 
 app.get("/reset/:token", (req, res) => {
@@ -335,7 +334,7 @@ app.post("/updatepassword", (req, res) => {
   });
 });
 
-app.get("/gotocart", (req, res) => {
+app.get("/cart", (req, res) => {
   if (!req.session.username) {
     res.redirect("/login");
     return;
@@ -578,6 +577,43 @@ app.get("/minus_quanity", (req, res) => {
         error: "",
         quantity: "",
       });
+    });
+  });
+});
+
+app.get("/checkout", (req, res) => {
+  // reaading file to display total amount to pay
+  if (!req.session.username) {
+    res.redirect("/login");
+    return;
+  }
+  fs.readFile("cart.txt", (err, data) => {
+    data = JSON.parse(data);
+
+    let amount = 0;
+
+    data[req.session.username].forEach((el) => {
+      amount += el.price * el.cart_quantity;
+    });
+    console.log(amount);
+    res.render("checkout", { bill: amount });
+  });
+});
+
+app.get("/buy", (req, res) => {
+  if (!req.session.username) {
+    res.redirect("/");
+    return;
+  }
+  //reading file to delete user data from cart
+  fs.readFile("cart.txt", (err, data) => {
+    data = JSON.parse(data);
+
+    delete data[req.session.username];
+
+    // updating file
+    fs.writeFile("cart.txt", JSON.stringify(data), (err) => {
+      res.render("thankyou");
     });
   });
 });

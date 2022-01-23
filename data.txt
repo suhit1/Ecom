@@ -1,1 +1,1 @@
-[{"username":"Suhit","password":"1234","email_id":"suhitgupta111@gmail.com","isVerified":true,"mail_token":1642936611731}]
+[{"username":"Suhit","password":"1234","email_id":"suhitgupta111@gmail.com","isVerified":true,"mail_token":1642936611731},{"username":"gupta","password":"4321","email_id":"suhit1408.cse19@chitkara.edu.in","isVerified":true,"mail_token":1642946159734}]

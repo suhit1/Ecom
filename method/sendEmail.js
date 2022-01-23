@@ -24,7 +24,7 @@ module.exports = (email_id, name, link, whattodo, callback) => {
               Name: name,
             },
           ],
-          Subject: "PLz Verify Your Account",
+          Subject: "Verify Your Account",
           TextPart: "Greetings from Suhit!",
           HTMLPart: `Hi <b>${name}</b> Hope you are doing Well!
                       <br/>
@@ -56,11 +56,11 @@ module.exports = (email_id, name, link, whattodo, callback) => {
               Name: name,
             },
           ],
-          Subject: "PLz Verify Your Account",
+          Subject: "Forgot Password!",
           TextPart: "Greetings from Suhit!",
           HTMLPart: `Welcome dear <b>${name}</b> Hope you are doing Well!
                       <br/>
-                   Copy This link And paste it in your browser ${link} to reset Your Password
+                   Click on this Link ${link} to reset Your Password
                    <br/>
                    If this link does not open copy this link and paste it in the browser
                    `,
