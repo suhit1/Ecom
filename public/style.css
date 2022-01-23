@@ -253,6 +253,10 @@ body {
    color: white;
     font-size: 1vw"
 }
+.product_image_cart {
+  width: 20vw;
+  height: 20vh;
+}
 
 /* making responsive */
 
@@ -338,6 +342,9 @@ body {
     font-weight: bold;
   }
   .a-checkout {
+    font-size: 15px;
+  }
+  .a-checkout:hover{
     font-size: 15px;
   }
   .product_image_cart {
