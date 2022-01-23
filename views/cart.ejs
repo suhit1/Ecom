@@ -26,11 +26,15 @@
     <button class="btn-lg btn-warning checkou_btnt">
       <a class="a-checkout" href="/checkout">Checkout</a>
     </button>
-    <div id="grad1" class="row outside_div">
+    <div id="grad1_cart" class="row outside_div">
       <% cart_data.forEach((product)=>{ %>
       <div class="product_box col-sm-3">
         <div class="inside_div">
-          <img class="product_image" src="<%= product.image %>" alt="Image" />
+          <img
+            class="product_image_cart"
+            src="<%= product.image %>"
+            alt="Image"
+          />
           <h3 class="product_name"><%= product.name %></h3>
           <h3 class="product_price">Rs. <%= product.price %></h3>
           <h3 class="product_quantity">

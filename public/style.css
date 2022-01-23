@@ -30,6 +30,7 @@ body {
   justify-content: center;
   margin-top: 15%;
   padding: 20px;
+  font-size: 2rem;
 }
 .a1,
 .a2 {
@@ -157,7 +158,7 @@ body {
 }
 .a_home,
 .a_logout {
-  font-size: 1vw;
+  /* font-size: 1vw; */
   text-decoration: none;
   color: black;
   font-size: 30px;
@@ -245,4 +246,137 @@ body {
   text-align: right;
   position: relative;
   bottom: 0px;
+}
+.a_cart,
+.a_buy {
+  text-decoration: none;
+   color: white;
+    font-size: 1vw"
+}
+
+/* making responsive */
+
+@media screen and (max-width: 500px) {
+  .what {
+    font-size: 1rem;
+  }
+  .btn1 {
+    width: 20vw;
+    height: 6vh;
+  }
+  .btn2 {
+    width: 20vw;
+    height: 6vh;
+  }
+  .a1 {
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    top: -2px;
+  }
+  .a2 {
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    top: -2px;
+  }
+  .a_product_Page {
+    font-size: 10px;
+  }
+  .login_div {
+    padding: 0px;
+  }
+  .form {
+    text-align: center;
+    padding: 60px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+  .Username {
+    width: 40vw;
+    position: relative;
+    left: -50px;
+  }
+  .password {
+    width: 40vw;
+    position: relative;
+    left: -50px;
+  }
+  .login_btn,
+  .signup_btn {
+    width: 20vw;
+    font-size: 20px;
+  }
+  .email_id {
+    width: 40vw;
+    position: relative;
+    left: -50px;
+  }
+  .a_logout,
+  .a_home {
+    font-size: 15px;
+    font-weight: bolder;
+  }
+  .btn_div {
+    position: relative;
+    top: -20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .product_image {
+    width: 60vw;
+  }
+  .add_toCart_button {
+    width: 30vw;
+  }
+  .a_add_toCart {
+    font-size: 15px;
+  }
+  .suhit {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .a-checkout {
+    font-size: 15px;
+  }
+  .product_image_cart {
+    width: 60vw;
+    height: 40vh;
+  }
+  .a_remove_Cart {
+    font-size: 15px;
+  }
+  #grad1_cart {
+    margin-top: 80px;
+  }
+  .heading {
+    font-size: 20px;
+  }
+  .p_heading {
+    display: flex;
+    flex-direction: column;
+  }
+  .forgot_fomr {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+  .heading {
+    flex: 1;
+  }
+  .outside_div {
+    padding: 40px;
+  }
+  .buy,
+  .cart {
+    width: 20vw;
+    height: 5vh;
+  }
+  .a_cart,
+  .a_buy {
+    font-size: 15px;
+  }
+  .updatepassword_btn{
+    width: 40vw;
+  }
 }
