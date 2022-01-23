@@ -179,7 +179,7 @@ app
 
         console.log(req.session);
 
-        let link = `http://localhost:8000/verify/${mail_token}`;
+        let link = `https://suhit-ecom.herokuapp.com/verify/${mail_token}`;
 
         // sending email
         sendEmail(
