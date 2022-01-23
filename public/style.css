@@ -257,6 +257,9 @@ body {
   width: 20vw;
   height: 20vh;
 }
+#grad1_cart {
+  margin-top: 80px;
+}
 
 /* making responsive */
 
