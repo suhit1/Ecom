@@ -28,7 +28,7 @@ module.exports = (email_id, name, link, whattodo, callback) => {
           TextPart: "Greetings from Suhit!",
           HTMLPart: `Hi <b>${name}</b> Hope you are doing Well!
                       <br/>
-                   click <a href="${link}">here</a>  to Verify your account
+                   Copy this link and paste it in your browser ${link}  to Verify your account
                    <br/>
                    If this link does not open copy this link and paste it in the browser
                    `,
