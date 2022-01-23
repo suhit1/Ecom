@@ -1,1 +1,0 @@
-{"gupta":[{"id":5,"image":"Jacket.jpg","name":"Jacket","cart_quantity":1,"product_quantity":7,"price":"3000"},{"id":1,"image":"Shoes.jpg","name":"Shoes","cart_quantity":1,"product_quantity":5,"price":"1500"},{"id":4,"image":"Watch.jpg","name":"Watch","cart_quantity":1,"product_quantity":5,"price":"1000"}]}
