@@ -1,0 +1,1 @@
+{"suhit":[{"id":4,"image":"Watch.jpg","name":"Watch","cart_quantity":1,"product_quantity":5,"price":"1000"},{"id":3,"image":"Jean.jpg","name":"Jeans","cart_quantity":1,"product_quantity":3,"price":"2000"},{"id":1,"image":"Shoes.jpg","name":"Shoes","cart_quantity":1,"product_quantity":5,"price":"1500"}]}
