@@ -267,7 +267,7 @@ app.get("/verify/:token", (req, res) => {
 app.get("/forgotpassword", (req, res) => {
   res.render("forgot", { error: "" });
 });
-
+// console.log(``);
 app.post("/reset", (req, res) => {
   let forgot_token = Date.now();
   let link = `http://localhost:8000/reset/${forgot_token}`;
