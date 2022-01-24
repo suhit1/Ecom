@@ -155,13 +155,22 @@ app
       }
 
       let namefound = false;
+      let email_found = false;
 
       file_data.forEach((element) => {
         if (element.username === req.body.Username) namefound = true;
+        if (element.email_id === req.body.email_id) email_found = true;
       });
 
-      if (namefound) {
+      if (namefound && !email_found) {
         res.render("signup", { error: "Username is Already Taken!" });
+        return;
+      }
+      if (!namefound && email_found) {
+        res.render("signup", {
+          error:
+            "This email ID is already registered with us. If you have forgotten your password, you can create a new password.!",
+        });
         return;
       }
 
