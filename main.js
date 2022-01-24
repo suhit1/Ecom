@@ -251,8 +251,7 @@ app.get("/verify/:token", (req, res) => {
         data = JSON.parse(data);
 
         data.forEach((element) => {
-          if (element.username === req.session.username)
-            element.isVerified = true;
+          if (element.username === user_logged_in) element.isVerified = true;
         });
 
         fs.writeFile("data.txt", JSON.stringify(data), (err) => {
