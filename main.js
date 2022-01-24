@@ -238,6 +238,7 @@ app.get("/verify/:token", (req, res) => {
       if (user_logged_in === el.username) {
         mail_token = el.mail_token;
       }
+      // console.log(``);
     });
     console.log("token=" + parseInt(token));
     console.log("mail_token=" + mail_token);
