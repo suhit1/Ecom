@@ -235,7 +235,7 @@ app.get("/verify/:token", (req, res) => {
     data = JSON.parse(data);
     let mail_token;
     data.forEach((el) => {
-      if (user_logged_in === req.session.username) {
+      if (user_logged_in === el.username) {
         mail_token = el.mail_token;
       }
     });
