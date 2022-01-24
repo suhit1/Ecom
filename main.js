@@ -279,7 +279,7 @@ app.post("/reset", (req, res) => {
 
     data.forEach((el) => {
       if (el.email_id === req.body.email_id) {
-        el.forgot_token = forgot_token;
+        // el.forgot_token = forgot_token;
         req.session.username = el.username;
         email_found = true;
       }
@@ -322,7 +322,7 @@ app.post("/updatepassword", (req, res) => {
     data = JSON.parse(data);
 
     data.forEach((el) => {
-      if (mail_token === el.forgot_token) el.password = req.body.password;
+      if (el.username === req.session.username) el.password = req.body.password;
     });
 
     fs.writeFile("data.txt", JSON.stringify(data), (err) => {
