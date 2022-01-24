@@ -238,7 +238,7 @@ app.get("/verify/:token", (req, res) => {
   console.log(req.session);
   const { token } = req.params; // in param data gets store after slash i.e / as in this case verify/ after this slas whatever will be there will get store in token variable
   // this token will be in string format
-
+  req.session.destroy();
   //readiing file to get mail_token
   fs.readFile("data.txt", "utf-8", (err, data) => {
     data = JSON.parse(data);
