@@ -261,7 +261,8 @@ app.get("/forgotpassword", (req, res) => {
 });
 
 app.post("/reset", (req, res) => {
-  let link = `https://suhit-ecom.herokuapp.com/reset/${Date.now()}`;
+  let forgot_token = Date.now();
+  let link = `https://suhit-ecom.herokuapp.com/reset/${forgot_token}`;
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) {
       console.log(err);
@@ -278,6 +279,7 @@ app.post("/reset", (req, res) => {
 
     data.forEach((el) => {
       if (el.email_id === req.body.email_id) {
+        el.forgot_token = forgot_token;
         req.session.username = el.username;
         email_found = true;
       }
@@ -286,10 +288,13 @@ app.post("/reset", (req, res) => {
       sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
         if (err) {
           res.render("forgot", { error: "Something Went Wrong" });
+          return;
         }
-        res.render("forgot", {
-          error: `A Mail Has Been Sent on your email address
-                  Check You email and spam folder`,
+        fs.readFile("data.txt", JSON.stringify(data), (err) => {
+          res.render("forgot", {
+            error: `A Mail Has Been Sent on your email address
+                    Check You email and spam folder`,
+          });
         });
       });
     } else {
@@ -299,8 +304,10 @@ app.post("/reset", (req, res) => {
     }
   });
 });
-
+let forgot_email_token;
 app.get("/reset/:token", (req, res) => {
+  const { mail_token } = parseInt(token);
+  forgot_email_token = mail_token;
   res.render("resetPassword", { error: "" });
 });
 
@@ -315,7 +322,7 @@ app.post("/updatepassword", (req, res) => {
     data = JSON.parse(data);
 
     data.forEach((el) => {
-      if (el.username === req.session.username) el.password = req.body.password;
+      if (mail_token === el.forgot_token) el.password = req.body.password;
     });
 
     fs.writeFile("data.txt", JSON.stringify(data), (err) => {
