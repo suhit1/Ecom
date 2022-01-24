@@ -19,6 +19,8 @@ const storage = multer.diskStorage({
   },
 });
 
+let user_logged_in;
+
 const upload = multer({ storage: storage });
 
 app.use(express.static("public")); // using express static for routing
@@ -176,6 +178,7 @@ app
       //writing file
       fs.writeFile("./data.txt", JSON.stringify(file_data), (err) => {
         req.session.username = req.body.Username;
+        user_logged_in = req.body.username;
 
         console.log(req.session);
 
@@ -232,7 +235,7 @@ app.get("/verify/:token", (req, res) => {
     data = JSON.parse(data);
     let mail_token;
     data.forEach((el) => {
-      if (el.username === req.session.username) {
+      if (user_logged_in === req.session.username) {
         mail_token = el.mail_token;
       }
     });
