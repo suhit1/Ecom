@@ -1,1 +1,0 @@
-[{"username":"Suhit","password":"1234","email_id":"suhitgupta111@gmail.com","isVerified":true,"mail_token":1643025469010}]
