@@ -117,7 +117,6 @@ app
       }
 
       if (!verified) {
-        req.session.username = req.body.Username;
         res.render("login", {
           error: "Your Account is not verified",
         });
@@ -186,7 +185,7 @@ app
 
       //writing file
       fs.writeFile("./data.txt", JSON.stringify(file_data), (err) => {
-        req.session.username = req.body.Username;
+        // req.session.username = req.body.Username;
         user_logged_in = req.body.username;
 
         console.log(req.session);
@@ -238,7 +237,7 @@ app.get("/verify/:token", (req, res) => {
   console.log(req.session);
   const { token } = req.params; // in param data gets store after slash i.e / as in this case verify/ after this slas whatever will be there will get store in token variable
   // this token will be in string format
-  req.session.destroy();
+  req.session.username = "";
   //readiing file to get mail_token
   fs.readFile("data.txt", "utf-8", (err, data) => {
     data = JSON.parse(data);

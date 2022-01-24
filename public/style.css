@@ -260,6 +260,20 @@ body {
 #grad1_cart {
   margin-top: 80px;
 }
+.home_product{
+  display: flex;
+  float: right;
+}
+.login_singup_home,.login_singup_product{
+  color: black;
+  text-decoration: none;
+  font-size: 30px;
+}
+.login_singup_home:hover,.login_singup_product:hover{
+  color: white;
+  text-decoration: none;
+  font-size: 30px;
+}
 
 /* making responsive */
 
@@ -392,5 +406,22 @@ body {
   .home_page_div{
     margin: auto;
     margin-top: 40%;
+  }
+  .home_product{
+    display: flex;
+    float: right;
+  }
+  .login_singup_home,.login_singup_product{
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  .login_singup_home:hover,.login_singup_product:hover{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  .login_div,.signup_div{
+    margin-top: 80px;
   }
 }
