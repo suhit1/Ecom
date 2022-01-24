@@ -166,7 +166,7 @@ app
         res.render("signup", { error: "Username is Already Taken!" });
         return;
       }
-      if (!namefound && email_found) {
+      if (email_found && !namefound) {
         res.render("signup", {
           error:
             "This email ID is already registered with us. If you have forgotten your password, you can create a new password.!",
