@@ -182,7 +182,7 @@ app
 
         console.log(req.session);
 
-        let link = `http://localhost:8000/verify/${mail_token}`;
+        let link = `https://suhit-ecom.herokuapp.com/verify/${mail_token}`;
 
         // sending email
         sendEmail(
@@ -262,7 +262,7 @@ app.get("/forgotpassword", (req, res) => {
 
 app.post("/reset", (req, res) => {
   let forgot_token = Date.now();
-  let link = `http://localhost:8000/reset/${forgot_token}`;
+  let link = `https://suhit-ecom.herokuapp.com/reset/${forgot_token}`;
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) {
       console.log(err);
