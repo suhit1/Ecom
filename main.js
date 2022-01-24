@@ -228,40 +228,27 @@ app.get("/logout", (req, res) => {
 app.get("/verify/:token", (req, res) => {
   console.log(req.session);
   const { token } = req.params; // in param data gets store after slash i.e / as in this case verify/ after this slas whatever will be there will get store in token variable
-  // this toekn will be in string format
+  // this token will be in string format
 
   //readiing file to get mail_token
   fs.readFile("data.txt", "utf-8", (err, data) => {
     data = JSON.parse(data);
-    let mail_token;
+    let found = false;
     data.forEach((el) => {
-      if (req.session.username === el.username) {
-        mail_token = el.mail_token;
+      if (parseInt(token) === el.mail_token) {
+        el.isVerified = true;
+        found = true;
       }
     });
-    console.log("token=" + parseInt(token));
-    console.log("mail_token=" + mail_token);
-    if (parseInt(token) === mail_token) {
-      fs.readFile("data.txt", "utf-8", (err, data) => {
+    // console.log("token=" + parseInt(token));
+    // console.log("mail_token=" + mail_token);
+    if (found) {
+      fs.writeFile("data.txt", JSON.stringify(data), (err) => {
         if (err) {
           console.log(err);
           return;
         }
-
-        data = JSON.parse(data);
-
-        data.forEach((element) => {
-          if (element.username === req.session.username)
-            element.isVerified = true;
-        });
-
-        fs.writeFile("data.txt", JSON.stringify(data), (err) => {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          res.send("Account Verified Go Back To Home Page and Login!!!");
-        });
+        res.send("Account Verified Go Back To Home Page and Login!!!");
       });
       return;
     }
