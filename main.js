@@ -235,10 +235,9 @@ app.get("/verify/:token", (req, res) => {
     data = JSON.parse(data);
     let mail_token;
     data.forEach((el) => {
-      if (user_logged_in === el.username) {
+      if (req.session.username === el.username) {
         mail_token = el.mail_token;
       }
-      // console.log(``);
     });
     console.log("token=" + parseInt(token));
     console.log("mail_token=" + mail_token);
@@ -252,7 +251,8 @@ app.get("/verify/:token", (req, res) => {
         data = JSON.parse(data);
 
         data.forEach((element) => {
-          if (element.username === user_logged_in) element.isVerified = true;
+          if (element.username === req.session.username)
+            element.isVerified = true;
         });
 
         fs.writeFile("data.txt", JSON.stringify(data), (err) => {
