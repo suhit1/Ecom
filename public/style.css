@@ -389,4 +389,8 @@ body {
   .updatepassword_btn{
     width: 40vw;
   }
+  .home_page_div{
+    margin: auto;
+    margin-top: 40%;
+  }
 }

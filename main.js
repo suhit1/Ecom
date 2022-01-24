@@ -182,7 +182,7 @@ app
 
         console.log(req.session);
 
-        let link = `https://suhit-ecom.herokuapp.com/verify/${mail_token}`;
+        let link = `http://localhost:8000/verify/${mail_token}`;
 
         // sending email
         sendEmail(
@@ -262,7 +262,7 @@ app.get("/forgotpassword", (req, res) => {
 
 app.post("/reset", (req, res) => {
   let forgot_token = Date.now();
-  let link = `https://suhit-ecom.herokuapp.com/reset/${forgot_token}`;
+  let link = `http://localhost:8000/reset/${forgot_token}`;
   fs.readFile("data.txt", "utf-8", (err, data) => {
     if (err) {
       console.log(err);
@@ -288,13 +288,10 @@ app.post("/reset", (req, res) => {
       sendEmail(req.body.email_id, "dear", link, "forgotpassword", (err) => {
         if (err) {
           res.render("forgot", { error: "Something Went Wrong" });
-          return;
         }
-        fs.readFile("data.txt", JSON.stringify(data), (err) => {
-          res.render("forgot", {
-            error: `A Mail Has Been Sent on your email address
-                    Check You email and spam folder`,
-          });
+        res.render("forgot", {
+          error: `A Mail Has Been Sent on your email address
+                      Check You email and spam folder`,
         });
       });
     } else {
@@ -304,10 +301,13 @@ app.post("/reset", (req, res) => {
     }
   });
 });
-let forgot_email_token;
 app.get("/reset/:token", (req, res) => {
-  const { mail_token } = parseInt(token);
-  forgot_email_token = mail_token;
+  if (!req.session.username) {
+    res.send(
+      "Plz open the same link in the browser from which you have sent the mail"
+    );
+    return;
+  }
   res.render("resetPassword", { error: "" });
 });
 

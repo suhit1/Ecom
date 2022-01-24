@@ -58,7 +58,7 @@ module.exports = (email_id, name, link, whattodo, callback) => {
           ],
           Subject: "Forgot Password!",
           TextPart: "Greetings from Suhit!",
-          HTMLPart: `Welcome dear <b>${name}</b> Hope you are doing Well!
+          HTMLPart: `Welcome  <b>${name}</b> Hope you are doing Well!
                       <br/>
                    Click on this Link ${link} to reset Your Password
                    <br/>
