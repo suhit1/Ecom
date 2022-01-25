@@ -242,9 +242,12 @@ body {
   color: white;
   text-decoration: none;
 }
+.madeby{
+  display: flex;
+  justify-content: center;
+}
 .suhit {
-  text-align: right;
-  position: relative;
+  position: absolute;
   bottom: 0px;
 }
 .a_cart,
