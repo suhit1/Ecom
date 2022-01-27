@@ -406,7 +406,7 @@ app.get("/verify/:token", (req, res) => {
     }
   });
 });
-
+// console.log(``);
 app.get("/forgotpassword", (req, res) => {
   res.render("forgot", { error: "" });
 });
