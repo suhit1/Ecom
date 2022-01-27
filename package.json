@@ -8,10 +8,14 @@
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "14.17.3"
+  },
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
+    "mongoose": "^6.1.8",
     "multer": "^1.4.4",
     "node-mailjet": "^3.3.5"
   }
