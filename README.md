@@ -10,7 +10,7 @@
 
 1. Firstly Download the project source code from my repository
 2. After downloading, open the downloaded folder in your code editor, e.g., Vscode
-3. Open Terminal and run the command "npm install i" and you are all set to use the project by running node main.js
+3. Open Terminal and run the command "npm install i" and you are all set to use the project by running node main.js on terminal
 
 #Tools Used
 
