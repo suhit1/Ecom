@@ -12,7 +12,7 @@
 2. After downloading, open the downloaded folder in your code editor, e.g., Vscode
 3. Open Terminal and run the command "pm install i" and you are all set to use the project by running node main.js
 
-#Toole Used
+#Tools Used
 
 Front End -> Ejs,Css,Bootstrap
 Back End -> Nodejs,MongoDB
