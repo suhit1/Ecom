@@ -14,6 +14,8 @@ const { Module } = require("module");
 const req = require("express/lib/request");
 const res = require("express/lib/response");
 
+const convertToHash = require("./method/ConvertToHash");
+
 // connecting mongodb data base
 mongoose.connect(
   "mongodb+srv://admin-Suhit:Suhit1234@cluster0.eld7f.mongodb.net/DataBase",
@@ -25,7 +27,7 @@ mongoose.connect(
 const userSchema = new mongoose.Schema({
   name: String,
   email_id: String,
-  password: String,
+  password: Number,
   isVerified: Boolean,
   mail_token: String,
 });
@@ -234,11 +236,9 @@ app
         res.render("login", { error: "Signup First" });
         return;
       }
+      let pass = convertToHash(req.body.password);
       data.forEach((el) => {
-        if (
-          el.name === req.body.Username &&
-          el.password === req.body.password
-        ) {
+        if (el.name === req.body.Username && el.password === pass) {
           match = true;
           if (el.isVerified === true) verified = true;
         }
@@ -321,10 +321,14 @@ app
           }
         );
 
+        let pass = convertToHash(req.body.password);
+
+        console.log(pass);
+
         const new_user = new user({
           name: req.body.Username,
           email_id: req.body.email_id,
-          password: req.body.password,
+          password: pass,
           isVerified: false,
           mail_token,
         });
@@ -356,6 +360,7 @@ app.get("/user", (req, res) => {
         username: req.session.username,
         products_data: arr,
         isloggedin: true,
+        disc: "",
       });
       return;
     }
@@ -363,6 +368,7 @@ app.get("/user", (req, res) => {
       username: req.session.username,
       products_data: data,
       isloggedin: false,
+      disc: "",
     });
   });
 });
@@ -422,10 +428,10 @@ app.post("/reset", (req, res) => {
       res.render("forgot", { error: "PLz Create An Account First!!" });
       return;
     }
-
     data.forEach((el) => {
       if (el.email_id === req.body.email_id) {
         email_found = true;
+        console.log(el.email_id);
         req.session.username = el.name;
       }
     });
@@ -472,7 +478,7 @@ app.post("/updatepassword", (req, res) => {
       if (el.name === req.session.username) {
         user.updateOne(
           { name: el.name },
-          { password: req.body.password },
+          { password: convertToHash(req.body.password) },
           (err) => {
             if (err) console.log(`error occured whicle changing password`);
             else res.send("Password Updated You Can Now Login");
@@ -536,6 +542,7 @@ app.get("/product", (req, res) => {
         username: req.session.username,
         products_data: arr,
         isloggedin: true,
+        disc: "",
       });
       return;
     }
@@ -543,6 +550,7 @@ app.get("/product", (req, res) => {
       username: req.session.username,
       products_data: data,
       isloggedin: false,
+      disc: "",
     });
   });
 });

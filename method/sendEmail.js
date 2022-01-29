@@ -43,6 +43,7 @@ module.exports = (email_id, name, link, whattodo, callback) => {
         callback(err, null);
       });
   } else if (whattodo === "forgotpassword") {
+    console.log(`Sent`);
     const request = mailjet.post("send", { version: "v3.1" }).request({
       Messages: [
         {
