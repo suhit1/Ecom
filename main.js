@@ -705,7 +705,11 @@ app.get("/checkout", (req, res) => {
     });
 
     console.log(amount);
-    res.render("checkout", { bill: amount });
+    res.render("checkout", {
+      username: req.session.username,
+      isloggedin: req.session.isloggedin,
+      bill: amount,
+    });
   });
 });
 
@@ -717,7 +721,11 @@ app.get("/buy", (req, res) => {
 
   cart.deleteMany({ username: req.session.username }, (err) => {
     if (err) console.log(`error`);
-    else res.render("thankyou");
+    else
+      res.render("thankyou", {
+        username: req.session.username,
+        isloggedin: req.session.isloggedin,
+      });
   });
 });
 
