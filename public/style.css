@@ -89,6 +89,9 @@ body {
   width: 20vw;
   height: 5vh;
 }
+/* .welcome_username{
+  font-size: 10px;
+} */
 .logout_btn {
   width: 7vw;
   background-color: aquamarine;
@@ -442,4 +445,7 @@ body {
     align-items: flex-end;
     width: 30vw;
   }
+  /* .welcome_username{
+    font-size: 10px;
+  } */
 }
